@@ -176,6 +176,32 @@ function coverInner(item) {
   const grad = gradientFor(item.title + item.author);
   return `<div class="card__cover-gen" style="background:${grad}">${esc(initials(item.title))}</div>`;
 }
+/* 卡片封面：多图作品渲染成可轮播的层叠幻灯片 */
+function cardCoverInner(item) {
+  if (item.gallery && item.gallery.length > 1) {
+    return item.gallery.map((s, i) => `<img class="cc-slide${i === 0 ? ' is-on' : ''}" src="${esc(s)}" alt="" loading="lazy" draggable="false"/>`).join('') +
+      `<span class="cc-dots">${item.gallery.map((_, i) => `<i class="cc-dot${i === 0 ? ' is-on' : ''}"></i>`).join('')}</span>`;
+  }
+  return coverInner(item);
+}
+/* 悬停时循环播放多图封面（渲染后调用） */
+function attachHoverPreviews(root) {
+  if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  root.querySelectorAll('.card__cover--multi').forEach(cover => {
+    const slides = [...cover.querySelectorAll('.cc-slide')];
+    const dots = [...cover.querySelectorAll('.cc-dot')];
+    if (slides.length < 2) return;
+    let idx = 0, timer = null;
+    const show = i => {
+      slides[idx].classList.remove('is-on'); if (dots[idx]) dots[idx].classList.remove('is-on');
+      idx = i;
+      slides[idx].classList.add('is-on'); if (dots[idx]) dots[idx].classList.add('is-on');
+    };
+    cover.addEventListener('mouseenter', () => { clearInterval(timer); timer = setInterval(() => show((idx + 1) % slides.length), 1050); });
+    cover.addEventListener('mouseleave', () => { clearInterval(timer); timer = null; show(0); });
+  });
+}
+
 function coverHtml(item, cls = 'card__cover') {
   return `<div class="${cls}">${coverInner(item)}</div>`;
 }
@@ -205,14 +231,16 @@ function cardHtml(item, i = 0, rank = 0) {
   const badge = rank
     ? `<span class="card__rank">${rank < 10 ? '0' + rank : rank}</span>`
     : (parent ? `<span class="card__remix-tag">🔀 衍生自 ${esc(parent.title)}</span>` : '');
+  const multi = item.gallery && item.gallery.length > 1;
   return `
     <article class="card" data-open="${item.id}" style="animation-delay:${Math.min(i * 45, 360)}ms">
-      <div class="card__cover">
-        ${coverInner(item)}
+      <div class="card__cover${multi ? ' card__cover--multi' : ''}">
+        ${cardCoverInner(item)}
         <span class="card__scrim"></span>
         <span class="card__go" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="17" height="17"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg>
         </span>
+        ${multi ? `<span class="card__shots" aria-hidden="true">▦ ${item.gallery.length}</span>` : ''}
         ${badge}
         ${isMine(item.id) ? '<span class="card__mine">我的</span>' : ''}
       </div>
@@ -240,6 +268,7 @@ function renderWall() {
   const wall = $('#wall');
   $('#emptyState').hidden = list.length > 0;
   wall.innerHTML = list.map((item, i) => cardHtml(item, i)).join('');
+  attachHoverPreviews(wall);
 }
 
 /* 今日精选：按热度取前若干，无筛选时展示 */
@@ -251,6 +280,7 @@ function renderFeatured() {
   if (pick.length < 3) { section.hidden = true; return; }
   section.hidden = false;
   $('#featuredRow').innerHTML = pick.map((item, i) => cardHtml(item, i, i + 1)).join('');
+  attachHoverPreviews($('#featuredRow'));
   updateFeatNav();
 }
 
