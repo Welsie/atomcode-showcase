@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AtomCode 灵感展示墙</title>
+  <meta name="description" content="展示、浏览、互动并二次创作用 AtomCode 打造的应用与有趣程序" />
+  <meta name="theme-color" content="#0a0a0b" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 宇宙流星背景 -->
+  <canvas id="cosmos" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="topbar" id="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#top" aria-label="AtomCode 首页">
+        <span class="brand__logo" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="26" height="26"><circle cx="16" cy="16" r="3.4" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="16" cy="16" rx="13" ry="5.5"/><ellipse cx="16" cy="16" rx="13" ry="5.5" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="13" ry="5.5" transform="rotate(120 16 16)"/></g></svg>
+        </span>
+        <span class="brand__name">ATOMCODE<em>/ 灵感墙</em></span>
+      </a>
+
+      <div class="topbar__search">
+        <svg class="topbar__search-icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm10 2-4.35-4.35"/></svg>
+        <input id="searchInput" type="search" placeholder="搜索作品 / 作者 / 标签" autocomplete="off" />
+      </div>
+
+      <button class="btn btn--primary" id="openSubmit">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+        发布作品
+      </button>
+    </div>
+  </header>
+
+  <!-- 英雄区：改变世界的科技里程碑（流光氛围） -->
+  <section class="hero" id="top">
+    <canvas id="heroflow" class="hero__flow" aria-hidden="true"></canvas>
+    <div class="hero__inner">
+      <span class="hero__eyebrow reveal">✦ 改变世界的科技时刻 · MILESTONES THAT CHANGED THE WORLD</span>
+
+      <div class="mstage reveal" style="--d:.1s" id="mstage">
+        <div class="mstage__spot" aria-hidden="true"></div>
+        <button class="mstage__nav mstage__nav--prev" id="mPrev" aria-label="上一个里程碑">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="mstage__year">
+          <span class="mstage__idx" id="mIndex"></span>
+          <b id="mYear">—</b>
+        </div>
+        <div class="mstage__body">
+          <div class="mstage__icon" id="mIcon"></div>
+          <div class="mstage__text">
+            <h3 id="mTitle"></h3>
+            <p id="mDesc"></p>
+          </div>
+        </div>
+        <button class="mstage__nav mstage__nav--next" id="mNext" aria-label="下一个里程碑">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="timeline reveal" style="--d:.2s" id="timeline">
+        <svg class="bridge" id="tlBridge" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+        <span class="walker" id="tlWalker" aria-hidden="true">
+          <svg class="walker__person" viewBox="0 0 26 32">
+            <circle class="walker__head" cx="13" cy="5.5" r="3.4"/>
+            <line class="walker__torso" x1="13" y1="9" x2="12" y2="19"/>
+            <line class="walker__limb walker__arm-b" x1="12.5" y1="11.5" x2="8.5" y2="16"/>
+            <line class="walker__limb walker__arm-f" x1="12.5" y1="11.5" x2="16.5" y2="16"/>
+            <line class="walker__limb walker__leg-b" x1="12" y1="19" x2="8" y2="27"/>
+            <line class="walker__limb walker__leg-f" x1="12" y1="19" x2="16" y2="27"/>
+          </svg>
+        </span>
+        <span class="spaceship" id="tlShip" aria-hidden="true">
+          <span class="ship__trail" aria-hidden="true"></span>
+          <svg class="ship__svg" viewBox="0 0 60 64">
+            <defs>
+              <linearGradient id="shipBody" x1="0" y1="0" x2="1" y2="0.7">
+                <stop offset="0" stop-color="#f6ffcf"/><stop offset=".4" stop-color="#d8ff3e"/><stop offset="1" stop-color="#82a71a"/>
+              </linearGradient>
+              <linearGradient id="shipFin" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#b6e02e"/><stop offset="1" stop-color="#6f9016"/>
+              </linearGradient>
+            </defs>
+            <g transform="rotate(24 30 32)">
+              <path class="ship__flame" fill="#ff7a2f" d="M23 45h14l-7 18z"/>
+              <path class="ship__flame2" fill="#ffdf8a" d="M26.5 45h7l-3.5 11z"/>
+              <path fill="url(#shipFin)" d="M18 30l-9 13 9-4zM42 30l9 13-9-4z"/>
+              <path fill="url(#shipBody)" d="M30 2c9 7 12 18 12 29l-4.5 12h-15L18 31C18 20 21 9 30 2z"/>
+              <path fill="rgba(0,0,0,.22)" d="M30 4c3.4 5 5 13 5 24l-2.5 13H33z"/>
+              <path fill="rgba(255,255,255,.6)" d="M26 8c-3.2 5-4.6 12-4.6 19l3-1.3c0-6.4 1.3-12 4.6-15.5z"/>
+              <circle cx="30" cy="24" r="4.8" fill="#0a1a12" stroke="#f6ffcf" stroke-width="1.7"/>
+              <circle cx="28.4" cy="22.6" r="1.4" fill="rgba(255,255,255,.7)"/>
+            </g>
+          </svg>
+        </span>
+        <div class="timeline__nodes" id="tlNodes"></div>
+      </div>
+
+      <h1 class="hero__title reveal" style="--d:.28s">下一个改变世界的灵感，<b class="hl">轮到你</b></h1>
+      <p class="hero__sub reveal" style="--d:.36s">
+        人类每一次跃迁，都始于一个不被看好的点子。在这里用 AtomCode 展示你的作品、点亮他人、一键二次创作——也许下一个里程碑就是你。
+      </p>
+      <div class="hero__cta reveal" style="--d:.44s">
+        <button class="btn btn--primary btn--lg" id="heroSubmit">立刻发布你的作品 →</button>
+        <a class="btn btn--ghost btn--lg" href="#wallSection">浏览作品墙</a>
+      </div>
+      <div class="hero__stats reveal" id="heroStats" style="--d:.52s"></div>
+    </div>
+    <div class="hero__scroll" aria-hidden="true"><span></span></div>
+    <div class="warp-vig" id="warpVig" aria-hidden="true"></div>
+  </section>
+
+  <!-- 今日精选 -->
+  <section class="featured" id="featuredSection" hidden>
+    <div class="featured__head reveal">
+      <div class="section-head section-head--inline">
+        <h2><span class="dot"></span>今日精选</h2>
+        <p>算法每天帮你挑出值得一看的那几个</p>
+      </div>
+      <div class="featured__nav">
+        <button class="round-btn" id="featPrev" aria-label="向左滑动">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="round-btn" id="featNext" aria-label="向右滑动">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="featured__row" id="featuredRow"></div>
+  </section>
+
+  <!-- 筛选工具条 -->
+  <div class="toolbar" id="wallSection">
+    <div class="toolbar__inner">
+      <div class="section-head section-head--inline">
+        <h2><span class="dot"></span>全部作品</h2>
+      </div>
+      <div class="toolbar__controls">
+        <div class="chips chips--scope" id="scopeFilters">
+          <button class="chip is-active" data-scope="all">全部</button>
+          <button class="chip" data-scope="mine">我的作品</button>
+          <button class="chip" data-scope="liked">我赞过</button>
+        </div>
+        <span class="toolbar__sep" aria-hidden="true"></span>
+        <div class="chips" id="tagFilters"></div>
+        <label class="sort">
+          <select id="sortSelect">
+            <option value="new">最新发布</option>
+            <option value="hot">最受欢迎</option>
+            <option value="views">最多浏览</option>
+            <option value="remix">最多衍生</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 作品墙 -->
+  <main class="wall" id="wall" aria-live="polite"></main>
+  <div class="empty" id="emptyState" hidden>
+    <p>没有找到匹配的作品。</p>
+    <button class="btn btn--ghost" id="clearFilters">清除筛选</button>
+  </div>
+
+  <!-- 底部召唤区（借鉴 AdventureX「立刻申请」动效） -->
+  <section class="cta" id="ctaSection">
+    <div class="cta__inner reveal">
+      <p class="cta__eyebrow">✦ 你的下一个灵感，值得被看见</p>
+      <h2 class="cta__title">加入 AtomCode <span>灵感墙</span></h2>
+      <div class="cta__magnet" id="ctaMagnet">
+        <button class="cta__btn" id="ctaSubmit">
+          <span class="cta__fill" aria-hidden="true"></span>
+          <span class="cta__label">
+            <span class="cta__text">立刻发布作品</span>
+            <span class="cta__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </span>
+        </button>
+        <span class="cta__badge" aria-hidden="true">
+          <svg viewBox="0 0 120 120" width="112" height="112">
+            <defs><path id="circlePath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" /></defs>
+            <text class="cta__badge-text"><textPath href="#circlePath" startOffset="0%">SHOWCASE · YOUR · IDEA · MADE · WITH · ATOMCODE · </textPath></text>
+          </svg>
+          <span class="cta__badge-dot">✦</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__big">ATOMCODE</div>
+    <p>用 ❤️ 与 AtomCode 打造 · 所有作品数据保存在你的浏览器本地</p>
+  </footer>
+
+  <!-- 发布 / 二次创作 弹窗 -->
+  <div class="modal" id="submitModal" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal__head">
+        <h2 id="modalTitle">发布你的作品</h2>
+        <button class="modal__close" data-close aria-label="关闭">✕</button>
+      </div>
+      <div class="remix-banner" id="remixBanner" hidden>
+        🔀 你正在二次创作 <strong id="remixSource"></strong>，来源将被自动记录。
+      </div>
+      <form id="submitForm" class="form">
+        <label class="field">
+          <span>作品名称 <i>*</i></span>
+          <input name="title" type="text" maxlength="60" required placeholder="例如：像素天气小助手" />
+        </label>
+        <label class="field">
+          <span>一句话简介 <i>*</i></span>
+          <input name="tagline" type="text" maxlength="100" required placeholder="它是做什么的？有什么好玩的？" />
+        </label>
+        <label class="field">
+          <span>详细介绍</span>
+          <textarea name="description" rows="4" maxlength="800" placeholder="灵感来源、实现思路、使用方法…"></textarea>
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>作者昵称 <i>*</i></span>
+            <input name="author" type="text" maxlength="30" required placeholder="你的名字" />
+          </label>
+          <label class="field">
+            <span>体验链接</span>
+            <input name="link" type="url" placeholder="https://…" />
+          </label>
+        </div>
+        <label class="field">
+          <span>封面图</span>
+          <div class="upload" id="uploadZone">
+            <input type="file" id="coverInput" accept="image/*" hidden />
+            <div class="upload__preview" id="coverPreview" hidden><img alt="封面预览" /></div>
+            <div class="upload__hint" id="uploadHint">
+              点击上传截图，或留空使用自动生成的封面
+            </div>
+          </div>
+        </label>
+        <label class="field">
+          <span>标签</span>
+          <input name="tags" type="text" placeholder="用逗号分隔，如：工具, 游戏, AI" />
+        </label>
+        <div class="form__actions">
+          <button type="button" class="btn btn--ghost" data-close>取消</button>
+          <button type="submit" class="btn btn--primary" id="submitBtn">发布到展示墙</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 详情弹窗 -->
+  <div class="modal" id="detailModal" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true">
+      <button class="modal__close" data-close aria-label="关闭">✕</button>
+      <div id="detailBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
