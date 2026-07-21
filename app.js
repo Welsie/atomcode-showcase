@@ -961,13 +961,17 @@ function initReveals() {
   $$('.reveal').forEach(el => io.observe(el));
 }
 
-/* 今日精选滚入时点亮（与第一屏光束呼应） */
+/* 今日精选：当大横幅卡片真正进入视口一半以上时才播放揭幕（避免刚探头就演完） */
 function initFeaturedEcho() {
   const sec = $('#featuredSection');
   if (!sec) return;
   if (document.documentElement.classList.contains('flat') || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { sec.classList.add('is-lit'); return; }
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { sec.classList.add('is-lit'); io.disconnect(); } }), { threshold: 0.08, rootMargin: '0px 0px -12% 0px' });
-  io.observe(sec);
+  const target = $('#featuredSpot') || sec;
+  // 观察大横幅本身，且要求可见比例达到一半 —— 用户真正看到它时才触发
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio >= 0.5) { sec.classList.add('is-lit'); io.disconnect(); }
+  }), { threshold: [0.5, 0.75] });
+  io.observe(target);
 }
 
 /* ---------- 顶栏滚动态 ---------- */
