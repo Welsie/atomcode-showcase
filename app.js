@@ -95,7 +95,7 @@ function seedData() {
 }
 
 /* 精选真实案例（来自 AtomGit，固定 id + 真实项目截图） */
-const CURATED_KEY = 'atomcode_curated_v6';
+const CURATED_KEY = 'atomcode_curated_v7';
 function curatedData() {
   const now = Date.now();
   return [
@@ -129,6 +129,12 @@ function curatedData() {
       description: '《谁去呀》是用 AtomCode 从零对话式开发、并完整走通「创建 → 开发 → 发布」全流程上线的微信小程序——一个帮朋友 / 同事发起活动、报名、看「谁去呀」的轻社交工具。\n\n📱 产品\n· 发起活动 / 活动详情 / 报名参与 / 参与人一览\n· 首页活动流、我参与的活动、个人中心\n· 微信小程序前端 + Node.js 后端\n\n🛠 亮点：整个项目（小程序前端 + 后端）由 AtomCode 用自然语言对话式开发，仓库还附带了「用 AtomCode 开发并发布微信小程序」的完整全流程教程。\n\n仓库：https://gitcode.com/uksri/goOrNot',
       author: 'uksri', link: 'https://gitcode.com/uksri/goOrNot', tags: ['小程序', '社交', '活动', '工具'],
       cover: 'assets/covers/goornot-1.png', gallery: ['assets/covers/goornot-1.png', 'assets/covers/goornot-2.png'], parentId: null, likes: 68, views: 510, comments: [], createdAt: now - 1 * 3600000,
+    },
+    {
+      id: 'c_meal', title: '小食堂 · 每日菜单', tagline: '一键生成营养均衡的今日菜单 + 买菜清单',
+      description: '一个给小食堂用的每日随机菜单 + 买菜清单工具，单个 HTML 文件、双击即用，不用安装、不用联网、不用服务器，手机电脑都能开。专为「每天 6-7 人、家常菜、不吃家禽、想吃得均衡」的场景设计。\n\n🍚 核心功能\n· 一键按人数搭配荤 / 半荤 / 素 / 汤 / 主食，自动生成今日菜单\n· 营养学配比：红肉 + 水产 + 蛋 / 豆蛋白刻意拉开、每天至少一道深色绿叶菜、主食粗粮打底、控辣少油，下方有均衡度清单实时打分\n· 同一天不撞类、近期约 40 道不重复；每道菜标注菜系（川 / 湘 / 粤 / 鲁 / 苏…）\n· 自动买菜清单：按人数换算用量、合并同类食材、分组，一键复制发给买菜的人\n· 忌口一键排除、今天想吃 / 点单、单道 🔄 换菜；人数 / 口味 / 忌口本地记住\n\n仓库：https://gitcode.com/saulcy/order_a_meal',
+      author: 'saulcy', link: 'https://gitcode.com/saulcy/order_a_meal', demo: 'https://raw.gitcode.work/saulcy/order_a_meal/raw/main/index.html', tags: ['工具', '效率', '生活', '美食'],
+      cover: 'assets/covers/meal-1.png', gallery: ['assets/covers/meal-1.png', 'assets/covers/meal-2.png'], parentId: null, likes: 54, views: 380, comments: [], createdAt: now - 0.5 * 3600000,
     },
   ];
 }

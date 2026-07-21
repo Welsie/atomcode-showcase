@@ -100,14 +100,14 @@ body::before {
           backdrop-filter: blur(calc(var(--warp, 0) * 4px));
 }
 .hero::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(to bottom, transparent 55%, rgba(10,10,11,.5) 85%, var(--bg) 100%); }
-.hero__inner { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-/* 顶部焦点簇（眉标+里程碑+桥）收紧，整块居中偏上；下方内容整体下移、中段留白 */
-.hero__inner > .hero__eyebrow { margin: 0 0 10px; }
+.hero__inner { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+/* 顶部焦点簇（眉标+里程碑+桥）收紧居中偏上；标题及以下整体下移、留出呼吸；连接器钉底 */
+.hero__inner > .hero__eyebrow { margin: 2.6vh 0 12px; }
 .hero__inner > .mstage { margin-top: 0; }
-.hero__inner > .timeline { margin-top: 8px; }
-.hero__inner > .hero__pitch { margin-top: 2.2vh; }
-.hero__inner > .hero__stats { margin-top: 16px; }
-.hero__inner > .hero__connect { margin-top: 14px; }
+.hero__inner > .timeline { margin-top: 12px; }
+.hero__inner > .hero__pitch { margin-top: 5.5vh; }
+.hero__inner > .hero__stats { margin-top: 24px; }
+.hero__inner > .hero__connect { margin-top: auto; }
 .hero__pitch { display: flex; flex-direction: column; align-items: center; }
 .hero__pitch .hero__title { margin-top: 0; }
 .hero__scroll { z-index: 1; }
