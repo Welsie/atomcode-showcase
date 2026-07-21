@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incoterms® 2020 — 国际贸易术语交互式参考工具</title>
+  <meta name="description" content="Incoterms® 2020 国际贸易术语交互式查询工具：11条规则全览、决策向导、对比视图、运输链路可视化。帮助贸易公司快速选择适合的贸易术语。">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===================== Header ===================== -->
+  <header class="site-header">
+    <div class="header-left">
+      <span class="header-logo">🌍</span>
+      <div class="header-title">
+        <h1>Incoterms® 2020</h1>
+        <span>International Chamber of Commerce (ICC)</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <select id="lang-select" title="Switch Language">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="ja">日本語</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ===================== Navigation Tabs ===================== -->
+  <nav class="nav-bar">
+    <button class="nav-tab active" data-tab="overview">📋 规则全览</button>
+    <button class="nav-tab" data-tab="wizard">🧭 决策向导</button>
+    <button class="nav-tab" data-tab="compare">⚖️ 对比视图</button>
+    <button class="nav-tab" data-tab="transport">🚚 运输链路</button>
+    <button class="nav-tab nav-tab-right" data-tab="disclaimer">📜 声明</button>
+  </nav>
+
+  <!-- ===================== Main Content ===================== -->
+  <main>
+
+    <!-- 1. 规则全览 -->
+    <section id="section-overview" class="section active">
+      <div id="overview-grid"></div>
+
+      <!-- Detail Panel (modal) -->
+      <div id="detail-panel" class="detail-panel">
+        <div class="detail-panel-inner">
+          <button id="detail-close" class="detail-close" title="关闭">✕</button>
+          <div id="detail-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 决策向导 -->
+    <section id="section-wizard" class="section">
+      <div id="wizard-content"></div>
+    </section>
+
+    <!-- 3. 对比视图 -->
+    <section id="section-compare" class="section">
+      <div id="compare-content"></div>
+    </section>
+
+    <!-- 4. 运输链路 -->
+    <section id="section-transport" class="section">
+      <div id="transport-content"></div>
+    </section>
+
+    <!-- 5. 声明 -->
+    <section id="section-disclaimer" class="section">
+      <div class="disclaimer-container">
+        <div class="disclaimer-card">
+          <h2 id="disclaimer-title"></h2>
+          <div class="disclaimer-version" id="disclaimer-version"></div>
+          <hr>
+          <div class="disclaimer-section">
+            <h3 id="disclaimer-source-heading"></h3>
+            <p id="disclaimer-source-text"></p>
+          </div>
+          <div class="disclaimer-section">
+            <h3 id="disclaimer-notice-heading"></h3>
+            <p id="disclaimer-notice-text"></p>
+          </div>
+          <hr>
+          <div class="disclaimer-section">
+            <h3 id="disclaimer-author-heading"></h3>
+            <p>Gary Yang &lt;garyyangcn@icloud.com&gt;</p>
+            <p>Co-Authored-By: AtomCode (deepseek-v4-pro) &lt;noreply@atomgit.com&gt;</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="site-footer">
+    <p id="footer-source"></p>
+    <p id="footer-disclaimer"></p>
+  </footer>
+
+  <!-- ===================== Scripts ===================== -->
+  <script src="js/i18n.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/wizard.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
