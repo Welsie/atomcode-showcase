@@ -167,7 +167,7 @@ function visibleItems() {
 /* 返回封面内部内容（img 或自动生成的渐变块），不含外层容器 */
 function coverInner(item) {
   if (item.cover) {
-    return `<img src="${item.cover}" alt="${esc(item.title)} 封面" loading="lazy"/>`;
+    return `<img src="${item.cover}" alt="${esc(item.title)} 封面" loading="lazy" draggable="false"/>`;
   }
   const grad = gradientFor(item.title + item.author);
   return `<div class="card__cover-gen" style="background:${grad}">${esc(initials(item.title))}</div>`;
