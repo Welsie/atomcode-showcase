@@ -88,7 +88,7 @@ body::before {
 .topbar__search input:focus { outline: none; border-color: var(--lime); }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; padding: 56px 24px 64px; min-height: calc(100vh - 66px); display: flex; align-items: center; overflow: hidden; }
+.hero { position: relative; padding: 48px 24px 40px; min-height: calc(100vh - 66px); display: flex; align-items: flex-end; overflow: hidden; }
 .hero__flow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 /* warp 时的边缘径向速度模糊 + 暗角（速度隧道感） */
 .warp-vig {
@@ -335,7 +335,7 @@ body::before {
 .section-head--inline { padding: 0; margin: 0; }
 
 /* ---------- Featured ---------- */
-.featured { padding: 96px 0 20px; position: relative; }
+.featured { padding: 52px 0 20px; position: relative; }
 .hotweek { padding: 48px 0 20px; }
 /* 舞台聚光灯揭幕：滚入时一束聚光从上方倾泻，把「今日精选」的卡片从暗中抬升点亮 + 高光扫过 */
 .spotlight { transform-style: preserve-3d; }
