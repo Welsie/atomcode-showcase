@@ -317,9 +317,15 @@ body::before {
 .hero__stats .stat { text-align: center; }
 .hero__stats .stat b { display: block; font-family: var(--font-display); font-size: 30px; font-weight: 700; color: var(--text); }
 .hero__stats .stat span { font-size: 12.5px; color: var(--muted); letter-spacing: .5px; }
-.hero__scroll { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); width: 22px; height: 34px; border: 1.5px solid var(--border); border-radius: 12px; }
-.hero__scroll span { position: absolute; top: 7px; left: 50%; width: 3px; height: 7px; margin-left: -1.5px; background: var(--lime); border-radius: 2px; animation: scrollDot 1.6s infinite; }
-@keyframes scrollDot { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(11px); } }
+/* 连接下一屏：向下流动的光束 + 弹动箭头 */
+.hero__connect { display: inline-flex; flex-direction: column; align-items: center; gap: 12px; margin: 46px auto 0; color: var(--muted); transition: color .25s var(--ease); }
+.hero__connect:hover { color: var(--lime); }
+.hero__connect-text { font-family: var(--font-display); font-size: 12px; letter-spacing: 3px; }
+.hero__connect-beam { position: relative; width: 2px; height: 54px; border-radius: 2px; background: linear-gradient(to bottom, rgba(216,255,62,.4), rgba(216,255,62,.02)); overflow: hidden; }
+.hero__connect-beam i { position: absolute; left: 50%; top: -30%; width: 6px; height: 18px; margin-left: -3px; border-radius: 3px; background: linear-gradient(to bottom, transparent, var(--lime)); box-shadow: 0 0 12px 2px rgba(216,255,62,.7); animation: beamFall 1.9s cubic-bezier(.5,.05,.5,1) infinite; }
+@keyframes beamFall { 0% { top: -30%; opacity: 0; } 15% { opacity: 1; } 75% { opacity: 1; } 100% { top: 105%; opacity: 0; } }
+.hero__connect-chevron { display: grid; place-items: center; animation: chevBounce 1.9s ease-in-out infinite; }
+@keyframes chevBounce { 0%,100% { transform: translateY(0); opacity: .7; } 50% { transform: translateY(4px); opacity: 1; } }
 
 /* ---------- Section head ---------- */
 .section-head { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
@@ -600,7 +606,7 @@ html.flat { scroll-behavior: auto; }
   .node.is-active .node__dot, .timeline__fill::after { animation: none; }
   .walker svg, .walker__limb, .ship__flame, .ship__flame2 { animation: none !important; }
   .reveal { opacity: 1 !important; transform: none !important; }
-  .marquee__track, .hero__scroll span { animation: none; }
+  .hero__connect-beam i, .hero__connect-chevron { animation: none; }
   html { scroll-behavior: auto; }
 }
 

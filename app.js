@@ -678,7 +678,7 @@ function initMilestones() {
     `<button class="node" data-i="${i}" aria-label="${m.year} ${esc(m.title)}"><span class="node__dot"></span><span class="node__yr">${m.year}</span></button>`
   ).join('');
   const nodes = [...nodesBox.children];
-  const stage = $('#mstage'), yearEl = $('#mYear'), idxEl = $('#mIndex');
+  const stage = $('#mstage'), yearEl = $('#mYear');
   const iconEl = $('#mIcon'), titleEl = $('#mTitle'), descEl = $('#mDesc'), walker = $('#tlWalker'), ship = $('#tlShip');
   const bridgeSvg = $('#tlBridge'), timelineEl = $('#timeline'), heroEl = $('#top');
 
@@ -751,7 +751,6 @@ function initMilestones() {
     if (i === cur) return;
     cur = i;
     const m = MILESTONES[i];
-    idxEl.textContent = String(i + 1).padStart(2, '0') + ' / ' + n;
     yearEl.textContent = m.year;
     iconEl.innerHTML = `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg>`;
     titleEl.innerHTML = esc(m.title) + (m.place ? ` <span class="mstage__place">${esc(m.place)}</span>` : '');

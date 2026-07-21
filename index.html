@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
 </head>
 <body>
   <!-- 宇宙流星背景 -->
@@ -50,7 +50,6 @@
           <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
         </button>
         <div class="mstage__year">
-          <span class="mstage__idx" id="mIndex"></span>
           <b id="mYear">—</b>
         </div>
         <div class="mstage__body">
@@ -115,8 +114,14 @@
         <a class="btn btn--ghost btn--lg" href="#wallSection">浏览作品墙</a>
       </div>
       <div class="hero__stats reveal" id="heroStats" style="--d:.52s"></div>
+      <a class="hero__connect reveal" href="#featuredSection" style="--d:.6s" aria-label="向下浏览作品">
+        <span class="hero__connect-text">向下探索作品</span>
+        <span class="hero__connect-beam"><i></i></span>
+        <span class="hero__connect-chevron">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+        </span>
+      </a>
     </div>
-    <div class="hero__scroll" aria-hidden="true"><span></span></div>
     <div class="warp-vig" id="warpVig" aria-hidden="true"></div>
   </section>
 
@@ -277,6 +282,6 @@
 
   <div class="toast" id="toast" hidden></div>
 
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>
