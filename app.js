@@ -35,6 +35,16 @@ function initials(name = '?') {
   const t = name.trim();
   return (t[0] || '?').toUpperCase();
 }
+/* 生成一张带 emoji 的渐变封面（data URI SVG） */
+function emojiCover(emoji, seed) {
+  const h = hashHue(seed);
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='320' height='200'>` +
+    `<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>` +
+    `<stop offset='0' stop-color='hsl(${h},70%,55%)'/><stop offset='1' stop-color='hsl(${(h + 55) % 360},65%,45%)'/></linearGradient></defs>` +
+    `<rect width='320' height='200' fill='url(#g)'/>` +
+    `<text x='160' y='132' font-size='96' text-anchor='middle'>${emoji}</text></svg>`;
+  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
 
 /* ---------- 数据层 ---------- */
 let items = [];
@@ -80,7 +90,44 @@ function seedData() {
     mk({ title: '一键做表情包', tagline: '上传照片，秒变魔性动图', description: '内置十几种夸张模板，选一张脸就能生成会动的表情包，直接复制到聊天窗口。', author: 'Mimi', tags: ['工具', '娱乐', '图片'], likes: 205, views: 1520 }, 6),
     mk({ title: '声音可视化钢琴', tagline: '弹一个音，屏幕就绽放一朵花', description: '网页版钢琴，每个琴键对应一种粒子花，边弹边生成艺术画面，可导出成壁纸。', author: 'Lya', tags: ['音乐', '艺术', '互动'], likes: 158, views: 880 }, 3),
     mk({ title: '摸鱼倒计时', tagline: '离下班还有多少个「一杯咖啡」', description: '把枯燥的下班倒计时换算成咖啡、地铁、剧集数量，让等待变得有盼头。', author: '打工人', tags: ['效率', '娱乐'], likes: 61, views: 350 }, 1),
+    ...curatedData(),
   ];
+}
+
+/* 精选真实案例（来自 AtomGit，固定 id，避免重复合并） */
+const CURATED_KEY = 'atomcode_curated_v1';
+function curatedData() {
+  const now = Date.now();
+  return [
+    {
+      id: 'c_teris', title: '3D 圆柱俄罗斯方块', tagline: '把经典俄罗斯方块搬到旋转的圆柱体上',
+      description: '用 Web 技术实现的 3D 圆柱形俄罗斯方块——方块沿着圆柱曲面下落堆叠，换个维度重温经典，可在线试玩。\n\n仓库：https://atomgit.com/Midora/teris-web',
+      author: 'Midora', link: 'https://tetris.atomgit.com/', tags: ['游戏', '3D', '俄罗斯方块'],
+      cover: emojiCover('🕹️', 'teris'), parentId: null, likes: 152, views: 1180,
+      comments: [{ id: uid(), author: '方块控', text: '圆柱面下落太上头了！', at: now - 5 * 3600000 }], createdAt: now - 26 * 3600000,
+    },
+    {
+      id: 'c_minecraft', title: 'Three.js 我的世界', tagline: '基于 Three.js 的体素世界沙盒',
+      description: '用 Three.js 打造的体素沙盒世界，可在浏览器里搭建、破坏、探索方块地形，还原《Minecraft》的核心玩法。\n\n仓库：https://atomgit.com/saulcy/Minecraft',
+      author: 'saulcy', link: 'https://atomgit.com/saulcy/Minecraft', tags: ['游戏', '3D', 'Three.js', '沙盒'],
+      cover: emojiCover('🧱', 'minecraft'), parentId: null, likes: 233, views: 1620, comments: [], createdAt: now - 14 * 3600000,
+    },
+    {
+      id: 'c_incoterms', title: 'Incoterms 2020 交互查询', tagline: '快速查找与理解国际贸易术语',
+      description: '一个零依赖的单页应用，帮外贸从业者快速查询、理解并选择合适的 Incoterms® 2020 国际贸易术语。纯 HTML/CSS/原生 JS 实现，轻量自包含。\n\n仓库：https://atomgit.com/Gary_Yang/Incoterms2020',
+      author: 'Gary_Yang', link: 'https://atomgit.com/Gary_Yang/Incoterms2020', tags: ['工具', '外贸', '效率'],
+      cover: emojiCover('🚢', 'incoterms'), parentId: null, likes: 74, views: 560, comments: [], createdAt: now - 8 * 3600000,
+    },
+  ];
+}
+/* 已打开过网站的访客也补上精选案例（只合并一次，不覆盖用户自己的作品） */
+function mergeCurated() {
+  if (localStorage.getItem(CURATED_KEY)) return;
+  const have = new Set(items.map(i => i.id));
+  let added = 0;
+  curatedData().forEach(c => { if (!have.has(c.id)) { items.push(c); added++; } });
+  localStorage.setItem(CURATED_KEY, '1');
+  if (added) save();
 }
 
 /* ---------- 视图状态 ---------- */
@@ -941,6 +988,7 @@ function initStreaks() {
 // 截图辅助模式：?flat=1 时展开所有区块、去除首屏满高，便于整页/分区截图
 if (new URLSearchParams(location.search).has('flat')) document.documentElement.classList.add('flat');
 load();
+mergeCurated();
 bind();
 renderAll();
 initStreaks();
