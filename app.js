@@ -952,6 +952,15 @@ function initReveals() {
   $$('.reveal').forEach(el => io.observe(el));
 }
 
+/* 今日精选滚入时点亮（与第一屏光束呼应） */
+function initFeaturedEcho() {
+  const sec = $('#featuredSection');
+  if (!sec) return;
+  if (document.documentElement.classList.contains('flat') || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { sec.classList.add('is-lit'); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { sec.classList.add('is-lit'); io.disconnect(); } }), { threshold: 0.18 });
+  io.observe(sec);
+}
+
 /* ---------- 顶栏滚动态 ---------- */
 function initSticky() {
   const bar = $('#topbar');
@@ -961,11 +970,20 @@ function initSticky() {
 }
 
 /* ---------- 宇宙流星背景 ---------- */
+// 星座模板（点为局部 0..1 坐标，edges 连接点序号）
+const CONSTELLATIONS = [
+  { pts: [[0, 0.22], [0.18, 0.30], [0.36, 0.24], [0.52, 0.32], [0.68, 0.20], [0.82, 0.02], [0.66, -0.10]], edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]] }, // 北斗七星
+  { pts: [[0, 0.02], [0.22, 0.24], [0.44, 0.06], [0.66, 0.28], [0.88, 0.05]], edges: [[0, 1], [1, 2], [2, 3], [3, 4]] }, // 仙后座 W
+  { pts: [[0.12, 0], [0.32, 0.12], [0.52, 0.24], [0, 0.52], [0.62, 0.5], [0.16, 0.86], [0.5, 0.92]], edges: [[0, 1], [1, 2], [0, 3], [2, 4], [3, 5], [4, 6], [3, 4]] }, // 猎户
+  { pts: [[0.5, 0], [0, 0.7], [1, 0.72], [0.5, 0.42]], edges: [[0, 3], [3, 1], [3, 2], [1, 2]] }, // 三角
+  { pts: [[0, 0], [0.5, 0.16], [1, 0.04], [0.42, 0.5], [0.5, 0.9]], edges: [[0, 1], [1, 2], [1, 3], [3, 4]] }, // 天鹅十字
+];
+
 function initCosmos() {
   const canvas = $('#cosmos');
   if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const ctx = canvas.getContext('2d');
-  let w, h, dpr, stars = [], meteors = [], frame = 0;
+  let w, h, dpr, stars = [], meteors = [], consts = [], frame = 0;
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -981,6 +999,35 @@ function initCosmos() {
       tw: Math.random() * 0.02 + 0.004,
       ph: i,
     }));
+    // 布置几组星座（分散、多在上半屏，避免挡住内容）
+    const num = innerWidth < 700 ? 3 : 5;
+    consts = Array.from({ length: num }, () => {
+      const tpl = CONSTELLATIONS[Math.floor(Math.random() * CONSTELLATIONS.length)];
+      const size = (Math.random() * 90 + 100) * dpr;
+      return { tpl, x: Math.random() * (w - size * 1.1) + size * 0.05, y: Math.random() * (h * 0.72), size, ph: Math.random() * 6.28 };
+    });
+  }
+  function drawConstellations() {
+    for (const c of consts) {
+      const tw = 0.55 + Math.sin(frame * 0.012 + c.ph) * 0.45;      // 整体呼吸
+      const P = c.tpl.pts.map(p => [c.x + p[0] * c.size, c.y + p[1] * c.size]);
+      // 连线
+      ctx.strokeStyle = `rgba(180,205,255,${(0.14 * tw).toFixed(3)})`;
+      ctx.lineWidth = 0.7 * dpr;
+      ctx.beginPath();
+      for (const [a, b] of c.tpl.edges) { ctx.moveTo(P[a][0], P[a][1]); ctx.lineTo(P[b][0], P[b][1]); }
+      ctx.stroke();
+      // 节点星
+      for (let i = 0; i < P.length; i++) {
+        const a = (0.5 + Math.sin(frame * 0.02 + c.ph + i) * 0.35) * tw;
+        ctx.beginPath();
+        ctx.arc(P[i][0], P[i][1], 1.5 * dpr, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220,232,255,${Math.max(0.1, a).toFixed(3)})`;
+        ctx.shadowColor = 'rgba(200,220,255,0.9)'; ctx.shadowBlur = 6 * dpr;
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+    }
   }
   function spawnMeteor() {
     const startX = Math.random() * w * 1.1;
@@ -1003,6 +1050,8 @@ function initCosmos() {
       ctx.fillStyle = `rgba(240,240,235,${Math.max(0.05, a)})`;
       ctx.fill();
     }
+    // 星座
+    drawConstellations();
     // 偶发流星
     if (frame % 90 === 0 && meteors.length < 3 && Math.sin(frame) >= -2) spawnMeteor();
     for (let i = meteors.length - 1; i >= 0; i--) {
@@ -1109,6 +1158,7 @@ initMilestones();
 initHot();
 initCta();
 initReveals();
+initFeaturedEcho();
 initSticky();
 initCosmos();
 
