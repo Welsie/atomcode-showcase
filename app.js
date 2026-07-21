@@ -95,7 +95,7 @@ function seedData() {
 }
 
 /* 精选真实案例（来自 AtomGit，固定 id + 真实项目截图） */
-const CURATED_KEY = 'atomcode_curated_v2';
+const CURATED_KEY = 'atomcode_curated_v3';
 function curatedData() {
   const now = Date.now();
   return [
@@ -103,20 +103,20 @@ function curatedData() {
       id: 'c_teris', title: '3D 圆柱俄罗斯方块', tagline: '把经典俄罗斯方块搬到旋转的圆柱体上，还能召唤魔法小人',
       description: '一款移动端网页版俄罗斯方块，最大的不同是——棋盘是一个 3D 圆柱：方块绕着圆柱表面排列，左右移动会环绕一整圈，横向滑动还能旋转视角。\n\n✨ 玩法亮点\n· 2 档难度（简单 26px×14 行 / 困难 22px×16 行）\n· 起始 100 分，可花分召唤「魔法小人」跳跃 / 穿墙 / 固化成方块补满一行\n· 消行、软降、硬降计分，每 10 行升级、落速加快\n\n🎨 7 种「眼前一亮」的动效：+N 飞分拖尾、SINGLE/DOUBLE/TRIPLE/TETRIS 通报、TETRIS 抖屏、LEVEL UP 爆破、MAGIC TIME 屏闪、按钮涟漪；还有 conic 旋转舞台光、MAGIC 充能进度条、玻璃高光键帽等 UI 细节。\n\n🔗 在线试玩：https://tetris.atomgit.com/',
       author: 'Midora', link: 'https://tetris.atomgit.com/', tags: ['游戏', '3D', '俄罗斯方块', '移动端'],
-      cover: 'assets/covers/teris.png', parentId: null, likes: 152, views: 1180,
+      cover: 'assets/covers/teris-1.png', gallery: ['assets/covers/teris-1.png'], parentId: null, likes: 152, views: 1180,
       comments: [{ id: uid(), author: '方块控', text: '圆柱面下落太上头了！', at: now - 5 * 3600000 }], createdAt: now - 26 * 3600000,
     },
     {
       id: 'c_minecraft', title: 'Three.js 我的世界', tagline: '在单个 HTML 文件里，用 Three.js 复刻《我的世界》',
       description: '基于 Three.js 的第一人称沙盒体素世界，整个游戏塞进一个约 600 行的 HTML 文件，仅从 CDN 加载 Three.js，纯客户端运行。\n\n🎮 核心玩法\n· 程序化世界生成（Perlin 噪声）：草 / 泥土 / 石头 / 沙子 / 木头 / 树叶 / 木板 / 砖块 / 玻璃 / 水 10 种方块\n· 第一人称控制：WASD 移动、空格跳跃、Shift 奔跑、鼠标视角\n· 方块交互：左键挖掘、右键放置，9 格快捷栏（1-9 / 滚轮切换）\n· 半透明水体、AABB 碰撞检测\n\n🛠 技术亮点：区块化渲染 + 贪婪网格合并优化性能、顶点着色呈现自然质感、指针锁定 API 实现沉浸式操控。\n\n仓库：https://atomgit.com/saulcy/Minecraft',
       author: 'saulcy', link: 'https://atomgit.com/saulcy/Minecraft', tags: ['游戏', '3D', 'Three.js', '沙盒'],
-      cover: 'assets/covers/minecraft.png', parentId: null, likes: 233, views: 1620, comments: [], createdAt: now - 14 * 3600000,
+      cover: 'assets/covers/minecraft-2.png', gallery: ['assets/covers/minecraft-2.png', 'assets/covers/minecraft-1.png'], parentId: null, likes: 233, views: 1620, comments: [], createdAt: now - 14 * 3600000,
     },
     {
       id: 'c_incoterms', title: 'Incoterms 2020 交互查询', tagline: '零依赖单页应用，快速理解与选择国际贸易术语',
       description: '一个零依赖、纯 HTML/CSS/原生 JS 的单页应用，帮外贸从业者快速理解和选择合适的 Incoterms® 2020 国际贸易术语。\n\n📋 六大模块\n· 规则全览：11 条规则卡片，按运输方式分组，标注风险 / 费用 / 清关责任\n· 规则详情：十大义务（A/B）、费用清单、注意事项、适用场景\n· 决策向导：参考 ICC 官方流程图，4-6 步问答推荐最合适的术语\n· 对比视图：并排对比最多 3 条规则\n· 运输链路：SVG 可视化风险转移点与费用承担分离\n· 多语言：中 / 英 / 西 / 法 / 德 / 日 6 种语言\n\n数据基于 ICC Incoterms® 2020 官方出版物（PUB723E / PUB817E / Wallchart）。\n\n仓库：https://atomgit.com/Gary_Yang/Incoterms2020',
       author: 'Gary_Yang', link: 'https://atomgit.com/Gary_Yang/Incoterms2020', tags: ['工具', '外贸', '效率', 'SPA'],
-      cover: 'assets/covers/incoterms.png', parentId: null, likes: 74, views: 560, comments: [], createdAt: now - 8 * 3600000,
+      cover: 'assets/covers/incoterms-1.png', gallery: ['assets/covers/incoterms-1.png', 'assets/covers/incoterms-2.png', 'assets/covers/incoterms-3.png'], parentId: null, likes: 74, views: 560, comments: [], createdAt: now - 8 * 3600000,
     },
   ];
 }
@@ -127,7 +127,7 @@ function mergeCurated() {
   let changed = false;
   curatedData().forEach(c => {
     const ex = map.get(c.id);
-    if (ex) { Object.assign(ex, { title: c.title, tagline: c.tagline, description: c.description, link: c.link, tags: c.tags, cover: c.cover }); changed = true; }
+    if (ex) { Object.assign(ex, { title: c.title, tagline: c.tagline, description: c.description, link: c.link, tags: c.tags, cover: c.cover, gallery: c.gallery }); changed = true; }
     else { items.push(c); changed = true; }
   });
   localStorage.setItem(CURATED_KEY, '1');
@@ -274,8 +274,16 @@ function openDetail(id) {
   const mine = isMine(id);
 
   const isRepo = /atomgit\.com|github\.com/.test(item.link || '');
+  const shots = (item.gallery && item.gallery.length) ? item.gallery : (item.cover ? [item.cover] : []);
+  const galleryHtml = shots.length
+    ? `<div class="detail__gallery" id="detailGallery" data-i="0">
+         <div class="detail__gallery-track">${shots.map(s => `<div class="dg-slide"><img src="${esc(s)}" alt="项目截图" draggable="false"/></div>`).join('')}</div>
+         <span class="detail__cover-fade"></span>
+         ${shots.length > 1 ? `<button class="dg-arrow dg-arrow--prev" data-dg="prev" aria-label="上一张">‹</button><button class="dg-arrow dg-arrow--next" data-dg="next" aria-label="下一张">›</button><div class="dg-dots">${shots.map((_, i) => `<button class="dg-dot${i === 0 ? ' is-on' : ''}" data-dg-dot="${i}" aria-label="第 ${i + 1} 张"></button>`).join('')}</div>` : ''}
+       </div>`
+    : `<div class="detail__cover">${coverInner(item)}<span class="detail__cover-fade"></span></div>`;
   $('#detailBody').innerHTML = `
-    <div class="detail__cover">${coverInner(item)}<span class="detail__cover-fade"></span></div>
+    ${galleryHtml}
     <div class="detail__inner">
       <div class="detail__head">
         <h2 class="detail__title">${esc(item.title)}</h2>
@@ -317,6 +325,19 @@ function openDetail(id) {
     </div>`;
   showModal('#detailModal');
   renderWall(); // 更新浏览数
+}
+
+/* ---------- 详情截图画廊 ---------- */
+function moveGallery(dir, dotIndex) {
+  const g = $('#detailGallery'); if (!g) return;
+  const n = g.querySelectorAll('.dg-slide').length;
+  let i = parseInt(g.dataset.i || '0', 10);
+  if (dir === 'next') i = (i + 1) % n;
+  else if (dir === 'prev') i = (i - 1 + n) % n;
+  else if (dotIndex != null) i = dotIndex;
+  g.dataset.i = i;
+  g.querySelector('.detail__gallery-track').style.transform = `translateX(${-i * 100}%)`;
+  g.querySelectorAll('.dg-dot').forEach((d, j) => d.classList.toggle('is-on', j === i));
 }
 
 /* ---------- 点赞 ---------- */
@@ -500,6 +521,10 @@ function bind() {
 
   // 详情弹窗内的交互
   $('#detailBody').addEventListener('click', e => {
+    const dg = e.target.closest('[data-dg]');
+    if (dg) { moveGallery(dg.dataset.dg); return; }
+    const dgDot = e.target.closest('[data-dg-dot]');
+    if (dgDot) { moveGallery(null, +dgDot.dataset.dgDot); return; }
     const share = e.target.closest('[data-share]');
     if (share) { shareWork(share.dataset.share); return; }
     const edit = e.target.closest('[data-edit]');
