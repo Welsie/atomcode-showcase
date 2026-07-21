@@ -665,5 +665,21 @@ html.flat { scroll-behavior: auto; }
   .mstage__nav { display: none; }
   .node__yr { display: none; }
   .toolbar { top: 60px; }
-  .toolbar__inner { flex-direction: column; align-items: stretch; gap: 12px; }
+  .toolbar__inner { flex-direction: column; align-items: stretch; gap: 14px; }
+  .toolbar__controls { flex-direction: column; align-items: stretch; gap: 12px; }
+  .toolbar__sep { display: none; }
+  .chips { flex: 0 1 auto; }
+  .chips--scope { order: -1; }
+  #tagFilters { gap: 8px; }
+  .sort { width: 100%; }
+  .sort select { width: 100%; }
+  .featured__head { flex-wrap: wrap; gap: 12px; }
+  .featured__row, .wall { padding-left: 16px; padding-right: 16px; }
+  .featured__head, .toolbar__inner { padding-left: 16px; padding-right: 16px; }
+}
+
+@media (max-width: 400px) {
+  .hero__title { font-size: clamp(26px, 8.5vw, 34px); }
+  .hero__stats { gap: 20px; flex-wrap: wrap; justify-content: center; }
+  .spotlight__actions .btn { flex: 1 1 auto; justify-content: center; }
 }
