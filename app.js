@@ -95,7 +95,7 @@ function seedData() {
 }
 
 /* 精选真实案例（来自 AtomGit，固定 id + 真实项目截图） */
-const CURATED_KEY = 'atomcode_curated_v4';
+const CURATED_KEY = 'atomcode_curated_v5';
 function curatedData() {
   const now = Date.now();
   return [
@@ -117,6 +117,12 @@ function curatedData() {
       description: '一个零依赖、纯 HTML/CSS/原生 JS 的单页应用，帮外贸从业者快速理解和选择合适的 Incoterms® 2020 国际贸易术语。\n\n📋 六大模块\n· 规则全览：11 条规则卡片，按运输方式分组，标注风险 / 费用 / 清关责任\n· 规则详情：十大义务（A/B）、费用清单、注意事项、适用场景\n· 决策向导：参考 ICC 官方流程图，4-6 步问答推荐最合适的术语\n· 对比视图：并排对比最多 3 条规则\n· 运输链路：SVG 可视化风险转移点与费用承担分离\n· 多语言：中 / 英 / 西 / 法 / 德 / 日 6 种语言\n\n数据基于 ICC Incoterms® 2020 官方出版物（PUB723E / PUB817E / Wallchart）。\n\n仓库：https://atomgit.com/Gary_Yang/Incoterms2020',
       author: 'Gary_Yang', link: 'https://atomgit.com/Gary_Yang/Incoterms2020', demo: 'demos/incoterms/', tags: ['工具', '外贸', '效率', 'SPA'],
       cover: 'assets/covers/incoterms-1.png', gallery: ['assets/covers/incoterms-1.png', 'assets/covers/incoterms-2.png', 'assets/covers/incoterms-3.png'], parentId: null, likes: 74, views: 560, comments: [], createdAt: now - 8 * 3600000,
+    },
+    {
+      id: 'c_guandan', title: '掼蛋 · 4人单机', tagline: '纯原生单文件，单人对三 AI 的竞技掼蛋',
+      description: '一个纯原生 HTML/CSS/JS 实现的单人对三 AI 掼蛋（关牌）游戏，单文件全内联、无框架无构建无后端，双击即玩。你坐南，队友坐北，左右为对手，两队从打 2 一路升到打 A。\n\n🎴 完整竞技规则\n· 升级赛制：两队各自级别 2→A，坐庄方级牌为本局级牌；打 A 一局拿头游即赢整场\n· 打 A 保护、名次升级（双下 +3 / 1&3 名 +2 / 1&4 名 +1）\n· 进贡 / 还贡 / 抗贡；首局摸牌定先手\n· 红桃级牌 = 癞子（百搭）可拼任意牌型；接风\n\n🃏 牌型：单张 / 对子 / 三张 / 三带二 / 顺子 / 三连对 / 钢板，以及炸弹类（普通炸 / 同花顺 / 天王炸），非炸不能压炸；另有带拖特色玩法。\n\n🎮 操作：出牌 / 过 / 提示 / 新整场，点击手牌选中上浮。\n\n仓库：https://gitcode.com/Midora/guandan',
+      author: 'Midora', link: 'https://gitcode.com/Midora/guandan', demo: 'https://raw.gitcode.work/Midora/guandan/raw/main/index.html', tags: ['游戏', '纸牌', '掼蛋', '单机'],
+      cover: 'assets/covers/guandan-2.png', gallery: ['assets/covers/guandan-2.png', 'assets/covers/guandan-1.png'], parentId: null, likes: 96, views: 720, comments: [{ id: uid(), author: '牌搭子', text: '规则做得很全，AI 还会进贡抗贡，服气', at: now - 2 * 3600000 }], createdAt: now - 3 * 3600000,
     },
   ];
 }
