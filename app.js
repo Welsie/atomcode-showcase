@@ -793,25 +793,24 @@ function initFeatured() {
   row.addEventListener('scroll', updateFeatNav, { passive: true });
   addEventListener('resize', updateFeatNav, { passive: true });
 
-  // 鼠标按住拖拽
-  let down = false, startX = 0, startLeft = 0, moved = 0;
+  // 鼠标按住拖拽（仅在真正拖动后才捕获指针，避免吞掉普通点击）
+  let down = false, startX = 0, startLeft = 0, moved = 0, dragging = false;
   row.addEventListener('pointerdown', e => {
     if (e.pointerType === 'touch') return; // 触屏用原生滚动
-    down = true; moved = 0; startX = e.clientX; startLeft = row.scrollLeft;
-    row.setPointerCapture(e.pointerId);
+    down = true; moved = 0; dragging = false; startX = e.clientX; startLeft = row.scrollLeft;
   });
   row.addEventListener('pointermove', e => {
     if (!down) return;
     const dx = e.clientX - startX;
-    if (Math.abs(dx) > 4) { row.classList.add('is-dragging'); moved += Math.abs(dx); }
-    row.scrollLeft = startLeft - dx;
+    if (!dragging && Math.abs(dx) > 5) { dragging = true; row.classList.add('is-dragging'); try { row.setPointerCapture(e.pointerId); } catch (_) {} }
+    if (dragging) { moved += Math.abs(dx); row.scrollLeft = startLeft - dx; }
   });
-  const end = () => { down = false; row.classList.remove('is-dragging'); };
+  const end = () => { down = false; dragging = false; row.classList.remove('is-dragging'); };
   row.addEventListener('pointerup', end);
   row.addEventListener('pointercancel', end);
-  row.addEventListener('pointerleave', end);
-  // 拖动结束后抑制误触发的点击
-  row.addEventListener('click', e => { if (moved > 6) { e.stopPropagation(); e.preventDefault(); } }, true);
+  row.addEventListener('pointerleave', () => { if (down && !dragging) down = false; else end(); });
+  // 拖动结束后抑制误触发的点击（普通点击 moved 为 0，不受影响）
+  row.addEventListener('click', e => { if (moved > 6) { e.stopPropagation(); e.preventDefault(); } moved = 0; }, true);
 }
 
 /* ---------- CTA 磁吸按钮 ---------- */
