@@ -337,23 +337,23 @@ body::before {
 /* ---------- Featured ---------- */
 .featured { padding: 96px 0 20px; position: relative; }
 .hotweek { padding: 48px 0 20px; }
-/* 与第一屏光束呼应：滚入时光束落下、圆点闪光、内容上浮 */
-.featured__beam { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); width: 2px; height: 78px; pointer-events: none; }
-.featured__beam::before { content: ""; position: absolute; inset: 0; border-radius: 2px; background: linear-gradient(to bottom, rgba(216,255,62,0), rgba(216,255,62,.5)); transform-origin: top; transform: scaleY(0); }
-.featured.is-lit .featured__beam::before { animation: beamDraw .7s var(--ease) forwards; }
-.featured__beam i { position: absolute; left: 50%; top: 0; width: 6px; height: 16px; margin-left: -3px; border-radius: 3px; background: linear-gradient(to bottom, transparent, var(--lime)); box-shadow: 0 0 12px 2px rgba(216,255,62,.7); opacity: 0; }
-.featured.is-lit .featured__beam i { animation: beamComet .85s var(--ease) forwards; }
-.featured__beam b { position: absolute; left: 50%; bottom: -4px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: radial-gradient(circle, rgba(216,255,62,.95), transparent 70%); opacity: 0; }
-.featured.is-lit .featured__beam b { animation: beamImpact .7s .5s var(--ease) forwards; }
+/* 与第一屏光束呼应：滚入时光束落下、圆点炸开、内容随光浮现 */
+.featured__beam { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 3px; height: 96px; pointer-events: none; z-index: 2; }
+.featured__beam::before { content: ""; position: absolute; inset: 0; border-radius: 3px; background: linear-gradient(to bottom, rgba(216,255,62,0), rgba(216,255,62,.7)); transform-origin: top; transform: scaleY(0); }
+.featured.is-lit .featured__beam::before { animation: beamDraw .6s var(--ease) forwards; }
+.featured__beam i { position: absolute; left: 50%; top: 0; width: 9px; height: 26px; margin-left: -4.5px; border-radius: 5px; background: linear-gradient(to bottom, rgba(216,255,62,0), var(--lime)); box-shadow: 0 0 18px 4px rgba(216,255,62,.9); opacity: 0; }
+.featured.is-lit .featured__beam i { animation: beamComet .8s var(--ease) forwards; }
+.featured__beam b { position: absolute; left: 50%; bottom: -6px; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: radial-gradient(circle, rgba(233,255,150,1), rgba(216,255,62,.6) 40%, transparent 72%); opacity: 0; }
+.featured.is-lit .featured__beam b { animation: beamImpact .7s .48s var(--ease) forwards; }
 @keyframes beamDraw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-@keyframes beamComet { 0% { top: -16px; opacity: 0; } 20% { opacity: 1; } 100% { top: 74px; opacity: 0; } }
-@keyframes beamImpact { 0% { transform: scale(.3); opacity: 0; } 40% { opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
-.featured.is-lit .section-head .dot { animation: dotFlash .7s .48s var(--ease); }
-@keyframes dotFlash { 0%,100% { box-shadow: 0 0 14px var(--lime); transform: scale(1); } 45% { box-shadow: 0 0 28px 7px var(--lime); transform: scale(1.5); } }
-.featured .spotlight { opacity: 0; transform: translateY(26px) scale(.985); transition: opacity .7s var(--ease) .5s, transform .7s var(--ease) .5s; }
-.featured.is-lit .spotlight { opacity: 1; transform: none; }
-.featured .section-head { opacity: 0; transform: translateY(14px); transition: opacity .5s var(--ease) .35s, transform .5s var(--ease) .35s; }
-.featured.is-lit .section-head { opacity: 1; transform: none; }
+@keyframes beamComet { 0% { top: -24px; opacity: 0; } 18% { opacity: 1; } 100% { top: 82px; opacity: 0; } }
+@keyframes beamImpact { 0% { transform: scale(.3); opacity: 0; } 35% { opacity: 1; } 100% { transform: scale(5); opacity: 0; } }
+.featured.is-lit .section-head .dot { animation: dotFlash .8s .46s var(--ease); }
+@keyframes dotFlash { 0%,100% { box-shadow: 0 0 14px var(--lime); transform: scale(1); } 45% { box-shadow: 0 0 34px 10px var(--lime); transform: scale(1.7); } }
+/* 内容随光落下浮现（一次性动画；未触发时保持自然可见，杜绝内容消失） */
+.featured.is-lit .section-head { animation: sectRise .6s var(--ease) .4s both; }
+.featured.is-lit .spotlight { animation: sectRise .85s var(--ease) .52s both; }
+@keyframes sectRise { 0% { opacity: .1; transform: translateY(26px) scale(.985); } 100% { opacity: 1; transform: none; } }
 /* 今日精选：单个大横幅 */
 .spotlight { position: relative; width: min(1240px, calc(100% - 48px)); margin: 28px auto 0; display: grid; grid-template-columns: 1.2fr 1fr; background: var(--card); border: 1px solid var(--border); border-radius: 22px; overflow: hidden; cursor: pointer; transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease); }
 .spotlight:hover { transform: translateY(-4px); border-color: rgba(216,255,62,.5); box-shadow: var(--shadow); }

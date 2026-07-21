@@ -957,7 +957,7 @@ function initFeaturedEcho() {
   const sec = $('#featuredSection');
   if (!sec) return;
   if (document.documentElement.classList.contains('flat') || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { sec.classList.add('is-lit'); return; }
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { sec.classList.add('is-lit'); io.disconnect(); } }), { threshold: 0.18 });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { sec.classList.add('is-lit'); io.disconnect(); } }), { threshold: 0.08, rootMargin: '0px 0px -12% 0px' });
   io.observe(sec);
 }
 
@@ -1009,21 +1009,22 @@ function initCosmos() {
   }
   function drawConstellations() {
     for (const c of consts) {
-      const tw = 0.55 + Math.sin(frame * 0.012 + c.ph) * 0.45;      // 整体呼吸
+      const tw = 0.7 + Math.sin(frame * 0.012 + c.ph) * 0.3;        // 整体呼吸（更亮）
       const P = c.tpl.pts.map(p => [c.x + p[0] * c.size, c.y + p[1] * c.size]);
-      // 连线
-      ctx.strokeStyle = `rgba(180,205,255,${(0.14 * tw).toFixed(3)})`;
-      ctx.lineWidth = 0.7 * dpr;
+      // 连线（明显的蓝白微光）
+      ctx.strokeStyle = `rgba(190,215,255,${(0.42 * tw).toFixed(3)})`;
+      ctx.lineWidth = 1.1 * dpr;
+      ctx.shadowColor = 'rgba(150,190,255,0.6)'; ctx.shadowBlur = 3 * dpr;
       ctx.beginPath();
       for (const [a, b] of c.tpl.edges) { ctx.moveTo(P[a][0], P[a][1]); ctx.lineTo(P[b][0], P[b][1]); }
       ctx.stroke();
-      // 节点星
+      // 节点星（更大更亮 + 光晕）
       for (let i = 0; i < P.length; i++) {
-        const a = (0.5 + Math.sin(frame * 0.02 + c.ph + i) * 0.35) * tw;
+        const a = (0.85 + Math.sin(frame * 0.02 + c.ph + i) * 0.15) * tw;
         ctx.beginPath();
-        ctx.arc(P[i][0], P[i][1], 1.5 * dpr, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(220,232,255,${Math.max(0.1, a).toFixed(3)})`;
-        ctx.shadowColor = 'rgba(200,220,255,0.9)'; ctx.shadowBlur = 6 * dpr;
+        ctx.arc(P[i][0], P[i][1], 2.1 * dpr, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(232,242,255,${Math.max(0.35, a).toFixed(3)})`;
+        ctx.shadowColor = 'rgba(200,225,255,1)'; ctx.shadowBlur = 9 * dpr;
         ctx.fill();
       }
       ctx.shadowBlur = 0;
