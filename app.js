@@ -714,7 +714,7 @@ function initMilestones() {
     litRect = bridgeSvg.querySelector('#litRect');
   }
   function setLit(x) { if (litRect) litRect.setAttribute('width', Math.max(0, x)); }
-  function placeWalker(fr) { const x = xOfFr(fr); walker.style.left = x + 'px'; walker.style.top = (deckY(x) - 34) + 'px'; }
+  function placeWalker(fr) { const x = xOfFr(fr); walker.style.left = x + 'px'; walker.style.top = (deckY(x) - 36) + 'px'; }
   function hideShip() { if (ship) { ship.style.display = 'none'; ship.classList.remove('is-launch'); } }
   // 星尘粒子（附着在 timeline 坐标系，自动消失）
   function spawnShock(x, y) {

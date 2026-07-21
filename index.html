@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=11" />
 </head>
 <body>
   <!-- 宇宙流星背景 -->
@@ -68,13 +68,16 @@
       <div class="timeline reveal" style="--d:.2s" id="timeline">
         <svg class="bridge" id="tlBridge" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
         <span class="walker" id="tlWalker" aria-hidden="true">
-          <svg class="walker__person" viewBox="0 0 26 32">
-            <circle class="walker__head" cx="13" cy="5.5" r="3.4"/>
-            <line class="walker__torso" x1="13" y1="9" x2="12" y2="19"/>
-            <line class="walker__limb walker__arm-b" x1="12.5" y1="11.5" x2="8.5" y2="16"/>
-            <line class="walker__limb walker__arm-f" x1="12.5" y1="11.5" x2="16.5" y2="16"/>
-            <line class="walker__limb walker__leg-b" x1="12" y1="19" x2="8" y2="27"/>
-            <line class="walker__limb walker__leg-f" x1="12" y1="19" x2="16" y2="27"/>
+          <svg class="walker__person" viewBox="0 0 26 34">
+            <rect class="walker__body" x="9" y="13" width="8" height="10" rx="4"/>
+            <line class="walker__limb walker__arm-b" x1="12" y1="15.5" x2="6.8" y2="19.5"/>
+            <line class="walker__limb walker__leg-b" x1="11" y1="22" x2="7.3" y2="30.5"/>
+            <line class="walker__limb walker__leg-f" x1="15" y1="22" x2="18.7" y2="30.5"/>
+            <line class="walker__limb walker__arm-f" x1="14" y1="15.5" x2="19.2" y2="19.5"/>
+            <circle class="walker__head" cx="13" cy="8" r="6"/>
+            <circle class="walker__eye" cx="10.8" cy="8" r="1"/>
+            <circle class="walker__eye" cx="15.2" cy="8" r="1"/>
+            <path class="walker__smile" d="M10.8 10.4 q2.2 1.8 4.4 0"/>
           </svg>
         </span>
         <span class="spaceship" id="tlShip" aria-hidden="true">
@@ -121,7 +124,6 @@
   <section class="featured" id="featuredSection" hidden>
     <div class="section-head reveal">
       <h2><span class="dot"></span>今日精选</h2>
-      <p>算法每天帮你挑出最值得一看的那一个</p>
     </div>
     <div class="spotlight reveal" id="featuredSpot"></div>
   </section>
@@ -131,7 +133,6 @@
     <div class="featured__head reveal">
       <div class="section-head section-head--inline">
         <h2><span class="dot"></span>本周热门</h2>
-        <p>按互动热度排序</p>
       </div>
       <div class="featured__nav">
         <button class="round-btn" id="hotPrev" aria-label="向左滑动">
@@ -276,6 +277,6 @@
 
   <div class="toast" id="toast" hidden></div>
 
-  <script src="app.js?v=10"></script>
+  <script src="app.js?v=11"></script>
 </body>
 </html>
