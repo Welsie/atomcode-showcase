@@ -186,12 +186,12 @@ body::before {
 
 /* 桥上的小人（left/top 由 JS 沿桥面曲线定位） */
 .walker {
-  position: absolute; left: 0; top: 0; width: 22px; height: 28px; color: var(--lime);
-  pointer-events: none; z-index: 3; filter: drop-shadow(0 0 6px rgba(216,255,62,.85));
+  position: absolute; left: 0; top: 0; width: 32px; height: 40px; color: var(--lime);
+  pointer-events: none; z-index: 3; filter: drop-shadow(0 0 7px rgba(216,255,62,.9));
   transform: translate(-50%, var(--lift, 0px)) scale(var(--sc, 1));
 }
 /* 落在桥面的影子 */
-.walker::before { content: ""; position: absolute; left: 50%; bottom: -3px; width: 17px; height: 5px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, rgba(0,0,0,.55), transparent 70%); opacity: var(--sho, 1); transition: opacity .3s; }
+.walker::before { content: ""; position: absolute; left: 50%; bottom: -3px; width: 22px; height: 6px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, rgba(0,0,0,.55), transparent 70%); opacity: var(--sho, 1); transition: opacity .3s; }
 .walker svg { width: 100%; height: 100%; overflow: visible; display: block; }
 .walker__head { fill: currentColor; }
 .walker__torso, .walker__limb { stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; fill: none; }
@@ -328,6 +328,27 @@ body::before {
 
 /* ---------- Featured ---------- */
 .featured { padding: 96px 0 20px; }
+.hotweek { padding: 48px 0 20px; }
+/* 今日精选：单个大横幅 */
+.spotlight { position: relative; width: min(1240px, calc(100% - 48px)); margin: 28px auto 0; display: grid; grid-template-columns: 1.2fr 1fr; background: var(--card); border: 1px solid var(--border); border-radius: 22px; overflow: hidden; cursor: pointer; transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease); }
+.spotlight:hover { transform: translateY(-4px); border-color: rgba(216,255,62,.5); box-shadow: var(--shadow); }
+.spotlight__media { position: relative; overflow: hidden; min-height: 300px; aspect-ratio: auto; }
+.spotlight__media img, .spotlight__media .card__cover-gen { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.spotlight__media .card__cover-gen { font-size: 64px; }
+.spotlight:hover .spotlight__media img.is-on, .spotlight:hover .spotlight__media img:only-of-type, .spotlight:hover .spotlight__media .card__cover-gen { transform: scale(1.05); }
+.spotlight__info { padding: 30px 34px; display: flex; flex-direction: column; gap: 11px; justify-content: center; }
+.spotlight__badge { align-self: flex-start; font-family: var(--font-display); font-size: 12px; color: #0a0a0b; background: var(--lime); padding: 4px 12px; border-radius: 999px; font-weight: 700; }
+.spotlight__title { font-family: var(--font-display); font-size: clamp(22px, 2.6vw, 30px); margin: 3px 0 0; letter-spacing: -.5px; }
+.spotlight__tagline { color: var(--muted); margin: 0; font-size: 15px; line-height: 1.6; }
+.spotlight__tags { display: flex; gap: 7px; flex-wrap: wrap; }
+.spotlight__meta { display: flex; align-items: center; gap: 16px; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.spotlight__meta .card__author { color: var(--text); }
+.spotlight__actions { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+@media (max-width: 720px) {
+  .spotlight { grid-template-columns: 1fr; }
+  .spotlight__media { aspect-ratio: 16/10; min-height: 0; }
+  .spotlight__info { padding: 22px; }
+}
 .featured__head { max-width: 1240px; margin: 0 auto; padding: 0 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
 .featured__nav { display: flex; gap: 10px; }
 .round-btn { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-soft); color: var(--text); display: grid; place-items: center; cursor: pointer; transition: .2s var(--ease); }

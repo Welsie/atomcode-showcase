@@ -135,22 +135,26 @@ function mergeCurated() {
 }
 
 /* ---------- 视图状态 ---------- */
-let activeTag = null;
+let activeCat = null;   // 分类 key
 let sortMode = 'new';
 let keyword = '';
 let scope = 'all';   // all | mine | liked
 
-function allTags() {
-  const set = new Set();
-  items.forEach(i => (i.tags || []).forEach(t => set.add(t)));
-  return [...set].sort();
-}
+/* 精简的 3-4 个大分类：把细标签归并进去 */
+const CATEGORIES = [
+  { key: 'game', label: '🎮 游戏', tags: ['游戏', '3D', '俄罗斯方块', '沙盒', 'Three.js', '游戏化', '娱乐'] },
+  { key: 'tool', label: '🛠 工具效率', tags: ['工具', '效率', '外贸', 'SPA', '天气', '移动端'] },
+  { key: 'creative', label: '🎨 创意', tags: ['创意', '艺术', '音乐', '文字', '图片', '像素', '互动'] },
+  { key: 'ai', label: '🤖 AI', tags: ['AI'] },
+];
+const catOf = key => CATEGORIES.find(c => c.key === key);
+const itemInCat = (item, key) => { const c = catOf(key); return c ? (item.tags || []).some(t => c.tags.includes(t)) : true; };
 
 function visibleItems() {
   let list = items.slice();
   if (scope === 'mine') list = list.filter(i => isMine(i.id));
   else if (scope === 'liked') list = list.filter(i => likedSet.has(i.id));
-  if (activeTag) list = list.filter(i => (i.tags || []).includes(activeTag));
+  if (activeCat) list = list.filter(i => itemInCat(i, activeCat));
   if (keyword) {
     const k = keyword.toLowerCase();
     list = list.filter(i =>
@@ -218,10 +222,9 @@ function renderStats() {
 }
 
 function renderTags() {
-  const tags = allTags();
   const box = $('#tagFilters');
-  box.innerHTML = `<button class="chip ${!activeTag ? 'is-active' : ''}" data-tag="">全部</button>` +
-    tags.map(t => `<button class="chip ${activeTag === t ? 'is-active' : ''}" data-tag="${esc(t)}"># ${esc(t)}</button>`).join('');
+  box.innerHTML = `<button class="chip ${!activeCat ? 'is-active' : ''}" data-cat="">全部</button>` +
+    CATEGORIES.map(c => `<button class="chip ${activeCat === c.key ? 'is-active' : ''}" data-cat="${c.key}">${c.label}</button>`).join('');
 }
 
 function cardHtml(item, i = 0, rank = 0) {
@@ -271,23 +274,63 @@ function renderWall() {
   attachHoverPreviews(wall);
 }
 
-/* 今日精选：按热度取前若干，无筛选时展示 */
+/* 互动热度分：点赞 + 评论 + 浏览 + 衍生 */
+function hotScore(it) {
+  const remixN = items.filter(x => x.parentId === it.id).length;
+  return it.likes * 3 + (it.comments ? it.comments.length : 0) * 4 + it.views * 0.15 + remixN * 5;
+}
+
+/* 今日精选：只聚焦最热门的一个，做成大横幅 */
 function renderFeatured() {
   const section = $('#featuredSection');
-  const pick = items.slice()
-    .sort((a, b) => (b.likes + b.views * 0.2) - (a.likes + a.views * 0.2))
-    .slice(0, 6);
+  const spot = $('#featuredSpot');
+  if (!items.length) { section.hidden = true; return; }
+  const top = items.slice().sort((a, b) => hotScore(b) - hotScore(a))[0];
+  section.hidden = false;
+  const remixN = items.filter(x => x.parentId === top.id).length;
+  spot.dataset.open = top.id;
+  spot.innerHTML = `
+    <div class="spotlight__media card__cover${top.gallery && top.gallery.length > 1 ? ' card__cover--multi' : ''}">
+      ${cardCoverInner(top)}
+      <span class="card__scrim"></span>
+    </div>
+    <div class="spotlight__info">
+      <span class="spotlight__badge">🔥 今日最值得一看</span>
+      <h3 class="spotlight__title">${esc(top.title)}</h3>
+      <p class="spotlight__tagline">${esc(top.tagline)}</p>
+      <div class="spotlight__tags">${(top.tags || []).slice(0, 4).map(t => `<span class="card__tag">#${esc(t)}</span>`).join('')}</div>
+      <div class="spotlight__meta">
+        <span class="card__author"><span class="avatar" style="background:${gradientFor(top.author)}">${esc(initials(top.author))}</span> ${esc(top.author)}</span>
+        <span>❤ ${top.likes}</span><span>👁 ${top.views}</span>${remixN ? `<span>🔀 ${remixN}</span>` : ''}
+      </div>
+      <div class="spotlight__actions">
+        <button class="btn btn--primary" data-open="${top.id}">查看详情 →</button>
+        ${top.demo ? `<a class="btn btn--ghost" href="${esc(top.demo)}" target="_blank" rel="noopener" data-stop>▶ 在线演示</a>` : ''}
+      </div>
+    </div>`;
+  attachHoverPreviews(spot);
+}
+
+/* 本周热门：近 7 天内按互动热度排序 */
+function renderHot() {
+  const section = $('#hotSection');
+  const row = $('#hotRow');
+  const weekAgo = Date.now() - 7 * 86400000;
+  let pool = items.filter(i => i.createdAt >= weekAgo);
+  if (pool.length < 4) pool = items.slice();          // 数据太少则不限时间
+  const pick = pool.sort((a, b) => hotScore(b) - hotScore(a)).slice(0, 8);
   if (pick.length < 3) { section.hidden = true; return; }
   section.hidden = false;
-  $('#featuredRow').innerHTML = pick.map((item, i) => cardHtml(item, i, i + 1)).join('');
-  attachHoverPreviews($('#featuredRow'));
-  updateFeatNav();
+  row.innerHTML = pick.map((item, i) => cardHtml(item, i, i + 1)).join('');
+  attachHoverPreviews(row);
+  updateHotNav();
 }
 
 function renderAll() {
   renderStats();
   renderTags();
   renderFeatured();
+  renderHot();
   renderWall();
 }
 
@@ -451,7 +494,7 @@ function handleSubmit(e) {
   ownedSet.add(item.id); saveOwned();
   save();
   hideModals();
-  scope = 'all'; activeTag = null; keyword = ''; sortMode = 'new';
+  scope = 'all'; activeCat = null; keyword = ''; sortMode = 'new';
   $('#searchInput').value = ''; $('#sortSelect').value = 'new';
   renderAll();
   toast(remixParentId ? '🔀 二次创作已发布！' : '🎉 作品已发布到展示墙！');
@@ -529,26 +572,28 @@ function bind() {
     renderWall();
   });
 
-  // 标签筛选
+  // 分类筛选
   $('#tagFilters').addEventListener('click', e => {
     const btn = e.target.closest('.chip'); if (!btn) return;
-    activeTag = btn.dataset.tag || null;
+    activeCat = btn.dataset.cat || null;
     renderTags(); renderWall();
   });
   $('#clearFilters').addEventListener('click', () => {
-    activeTag = null; keyword = ''; $('#searchInput').value = '';
+    activeCat = null; keyword = ''; $('#searchInput').value = '';
     renderTags(); renderWall();
   });
 
-  // 作品墙 & 今日精选 点击（打开详情 / 点赞）
+  // 作品墙 / 今日精选 / 本周热门 点击（打开详情 / 点赞）
   const onCardClick = e => {
+    if (e.target.closest('a[href], [data-stop]')) return; // 演示等外链正常跳转，不打开详情
     const like = e.target.closest('[data-like]');
-    if (like) { e.stopPropagation(); toggleLike(like.dataset.like); renderWall(); renderFeatured(); renderStats(); return; }
+    if (like) { e.stopPropagation(); toggleLike(like.dataset.like); renderWall(); renderFeatured(); renderHot(); renderStats(); return; }
     const card = e.target.closest('[data-open]');
     if (card) openDetail(card.dataset.open);
   };
   $('#wall').addEventListener('click', onCardClick);
-  $('#featuredRow').addEventListener('click', onCardClick);
+  $('#featuredSpot').addEventListener('click', onCardClick);
+  $('#hotRow').addEventListener('click', onCardClick);
 
   // 详情弹窗内的交互
   $('#detailBody').addEventListener('click', e => {
@@ -563,7 +608,7 @@ function bind() {
     const del = e.target.closest('[data-delete]');
     if (del) { deleteWork(del.dataset.delete); return; }
     const like = e.target.closest('[data-like-detail]');
-    if (like) { toggleLike(like.dataset.likeDetail); openDetail(like.dataset.likeDetail); renderWall(); renderFeatured(); renderStats(); return; }
+    if (like) { toggleLike(like.dataset.likeDetail); openDetail(like.dataset.likeDetail); renderWall(); renderFeatured(); renderHot(); renderStats(); return; }
     const remix = e.target.closest('[data-remix]');
     if (remix) { hideModals(); openSubmit(remix.dataset.remix); return; }
     const open = e.target.closest('[data-open]');
@@ -663,7 +708,7 @@ function initMilestones() {
     litRect = bridgeSvg.querySelector('#litRect');
   }
   function setLit(x) { if (litRect) litRect.setAttribute('width', Math.max(0, x)); }
-  function placeWalker(fr) { const x = xOfFr(fr); walker.style.left = x + 'px'; walker.style.top = (deckY(x) - 22) + 'px'; }
+  function placeWalker(fr) { const x = xOfFr(fr); walker.style.left = x + 'px'; walker.style.top = (deckY(x) - 34) + 'px'; }
   function hideShip() { if (ship) { ship.style.display = 'none'; ship.classList.remove('is-launch'); } }
   // 星尘粒子（附着在 timeline 坐标系，自动消失）
   function spawnShock(x, y) {
@@ -839,23 +884,23 @@ function initMilestones() {
   if (!reduced) raf = requestAnimationFrame(frame);
 }
 
-/* ---------- 今日精选：拖拽滑动 + 箭头 ---------- */
-function updateFeatNav() {
-  const row = $('#featuredRow');
-  const prev = $('#featPrev'), next = $('#featNext');
+/* ---------- 本周热门：拖拽滑动 + 箭头 ---------- */
+function updateHotNav() {
+  const row = $('#hotRow');
+  const prev = $('#hotPrev'), next = $('#hotNext');
   if (!row || !prev) return;
   const max = row.scrollWidth - row.clientWidth - 2;
   prev.disabled = row.scrollLeft <= 2;
   next.disabled = row.scrollLeft >= max;
 }
-function initFeatured() {
-  const row = $('#featuredRow');
+function initHot() {
+  const row = $('#hotRow');
   if (!row) return;
   const step = () => Math.max(320, row.clientWidth * 0.8);
-  $('#featPrev').addEventListener('click', () => row.scrollBy({ left: -step(), behavior: 'smooth' }));
-  $('#featNext').addEventListener('click', () => row.scrollBy({ left: step(), behavior: 'smooth' }));
-  row.addEventListener('scroll', updateFeatNav, { passive: true });
-  addEventListener('resize', updateFeatNav, { passive: true });
+  $('#hotPrev').addEventListener('click', () => row.scrollBy({ left: -step(), behavior: 'smooth' }));
+  $('#hotNext').addEventListener('click', () => row.scrollBy({ left: step(), behavior: 'smooth' }));
+  row.addEventListener('scroll', updateHotNav, { passive: true });
+  addEventListener('resize', updateHotNav, { passive: true });
 
   // 鼠标按住拖拽（仅在真正拖动后才捕获指针，避免吞掉普通点击）
   let down = false, startX = 0, startLeft = 0, moved = 0, dragging = false;
@@ -1056,7 +1101,7 @@ bind();
 renderAll();
 initStreaks();
 initMilestones();
-initFeatured();
+initHot();
 initCta();
 initReveals();
 initSticky();
@@ -1066,8 +1111,8 @@ initCosmos();
 if (document.documentElement.classList.contains('flat')) {
   const only = new URLSearchParams(location.search).get('only');
   if (only) {
-    const keep = { featured: ['featuredSection'], wall: ['wallSection', 'wall', 'emptyState'], cta: ['ctaSection'] }[only] || [];
-    ['top', 'featuredSection', 'wallSection', 'wall', 'emptyState', 'ctaSection'].forEach(id => {
+    const keep = { featured: ['featuredSection'], hot: ['hotSection'], wall: ['wallSection', 'wall', 'emptyState'], cta: ['ctaSection'] }[only] || [];
+    ['top', 'featuredSection', 'hotSection', 'wallSection', 'wall', 'emptyState', 'ctaSection'].forEach(id => {
       const el = document.getElementById(id);
       if (el && !keep.includes(id)) el.style.display = 'none';
     });

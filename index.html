@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link rel="stylesheet" href="styles.css?v=9" />
 </head>
 <body>
   <!-- 宇宙流星背景 -->
@@ -117,23 +117,32 @@
     <div class="warp-vig" id="warpVig" aria-hidden="true"></div>
   </section>
 
-  <!-- 今日精选 -->
+  <!-- 今日精选（单个聚焦） -->
   <section class="featured" id="featuredSection" hidden>
+    <div class="section-head reveal">
+      <h2><span class="dot"></span>今日精选</h2>
+      <p>算法每天帮你挑出最值得一看的那一个</p>
+    </div>
+    <div class="spotlight reveal" id="featuredSpot"></div>
+  </section>
+
+  <!-- 本周热门 -->
+  <section class="hotweek" id="hotSection" hidden>
     <div class="featured__head reveal">
       <div class="section-head section-head--inline">
-        <h2><span class="dot"></span>今日精选</h2>
-        <p>算法每天帮你挑出值得一看的那几个</p>
+        <h2><span class="dot"></span>本周热门</h2>
+        <p>按互动热度排序</p>
       </div>
       <div class="featured__nav">
-        <button class="round-btn" id="featPrev" aria-label="向左滑动">
+        <button class="round-btn" id="hotPrev" aria-label="向左滑动">
           <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
         </button>
-        <button class="round-btn" id="featNext" aria-label="向右滑动">
+        <button class="round-btn" id="hotNext" aria-label="向右滑动">
           <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         </button>
       </div>
     </div>
-    <div class="featured__row" id="featuredRow"></div>
+    <div class="featured__row" id="hotRow"></div>
   </section>
 
   <!-- 筛选工具条 -->
@@ -267,6 +276,6 @@
 
   <div class="toast" id="toast" hidden></div>
 
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>
