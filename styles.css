@@ -88,7 +88,7 @@ body::before {
 .topbar__search input:focus { outline: none; border-color: var(--lime); }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; padding: 40px 24px 40px; min-height: calc(100vh - 66px); display: flex; align-items: stretch; overflow: hidden; }
+.hero { position: relative; padding: 24px 24px 26px; min-height: calc(100vh - 66px); display: flex; align-items: stretch; overflow: hidden; }
 .hero__flow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 /* warp 时的边缘径向速度模糊 + 暗角（速度隧道感） */
 .warp-vig {
@@ -100,10 +100,14 @@ body::before {
           backdrop-filter: blur(calc(var(--warp, 0) * 4px));
 }
 .hero::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(to bottom, transparent 55%, rgba(10,10,11,.5) 85%, var(--bg) 100%); }
-.hero__inner { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
-/* 均匀铺开：交给 flex 分配行间距，清掉各行原有的上边距 */
-.hero__inner > .hero__eyebrow { margin-bottom: 0; }
-.hero__inner > .mstage, .hero__inner > .timeline, .hero__inner > .hero__pitch, .hero__inner > .hero__stats, .hero__inner > .hero__connect { margin-top: 0; }
+.hero__inner { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+/* 顶部焦点簇（眉标+里程碑+桥）收紧，整块居中偏上；下方内容整体下移、中段留白 */
+.hero__inner > .hero__eyebrow { margin: 0 0 10px; }
+.hero__inner > .mstage { margin-top: 0; }
+.hero__inner > .timeline { margin-top: 8px; }
+.hero__inner > .hero__pitch { margin-top: 2.2vh; }
+.hero__inner > .hero__stats { margin-top: 16px; }
+.hero__inner > .hero__connect { margin-top: 14px; }
 .hero__pitch { display: flex; flex-direction: column; align-items: center; }
 .hero__pitch .hero__title { margin-top: 0; }
 .hero__scroll { z-index: 1; }
@@ -112,7 +116,7 @@ body::before {
 /* 里程碑主舞台 */
 .mstage {
   position: relative; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 4.5vw, 60px);
-  width: min(940px, 94vw); margin: 24px auto 0; min-height: 200px; text-align: left;
+  width: min(940px, 94vw); margin: 24px auto 0; min-height: 170px; text-align: left;
 }
 .mstage__spot {
   position: absolute; inset: -20% -10%; z-index: -1; pointer-events: none; opacity: 0;
