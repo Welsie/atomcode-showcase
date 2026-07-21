@@ -342,8 +342,28 @@ body::before {
 .spotlight__cone { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0;
   background: radial-gradient(145% 118% at 50% -34%, rgba(240,255,175,.72), rgba(216,255,62,.22) 28%, transparent 56%); }
 .spotlight__cone::before { content: ""; position: absolute; top: -34px; left: 50%; width: 150px; height: 66px; margin-left: -75px; border-radius: 50%; filter: blur(7px); background: radial-gradient(circle, rgba(246,255,196,.95), rgba(216,255,62,.4) 45%, transparent 72%); }
-.featured.is-lit .spotlight__cone { animation: coneFlare 1.5s var(--ease) .1s forwards; }
-@keyframes coneFlare { 0% { opacity: 0; } 20% { opacity: 1; } 100% { opacity: .1; } }
+/* 追光先左右扫动（像在找人）再定住中央 */
+.featured.is-lit .spotlight__cone { animation: coneSweep 1.9s var(--ease) .1s forwards; }
+@keyframes coneSweep {
+  0% { opacity: 0; transform: translateX(-46%); }
+  14% { opacity: 1; transform: translateX(-34%); }
+  40% { transform: translateX(30%); }
+  64% { transform: translateX(-16%); }
+  84% { transform: translateX(6%); }
+  100% { opacity: .1; transform: translateX(0); }
+}
+/* 光束里漂浮的尘埃微粒 */
+.spotlight__motes { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; }
+.featured.is-lit .spotlight__motes { animation: motesIn 1.6s var(--ease) .35s forwards; }
+@keyframes motesIn { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: .55; } }
+.spotlight__motes i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(242,255,190,.95); box-shadow: 0 0 6px 1px rgba(216,255,62,.85); }
+.spotlight__motes i:nth-child(1) { left: 34%; top: 16%; animation: mote 5.5s ease-in-out infinite; }
+.spotlight__motes i:nth-child(2) { left: 46%; top: 30%; animation: mote 4.6s ease-in-out .6s infinite; }
+.spotlight__motes i:nth-child(3) { left: 52%; top: 12%; animation: mote 6.2s ease-in-out 1.1s infinite; }
+.spotlight__motes i:nth-child(4) { left: 40%; top: 40%; animation: mote 5s ease-in-out 1.8s infinite; }
+.spotlight__motes i:nth-child(5) { left: 58%; top: 26%; animation: mote 5.8s ease-in-out .3s infinite; }
+.spotlight__motes i:nth-child(6) { left: 30%; top: 34%; animation: mote 4.9s ease-in-out 2.3s infinite; }
+@keyframes mote { 0%,100% { transform: translateY(4px) translateX(0); opacity: .35; } 50% { transform: translateY(-16px) translateX(4px); opacity: 1; } }
 .spotlight__shine { position: absolute; top: 0; left: -65%; width: 45%; height: 100%; z-index: 5; pointer-events: none;
   background: linear-gradient(100deg, transparent, rgba(255,255,255,.36), transparent); transform: skewX(-14deg); opacity: 0; }
 .featured.is-lit .spotlight__shine { animation: shineSweep 1.1s var(--ease) .38s; }
@@ -629,7 +649,7 @@ html.flat { scroll-behavior: auto; }
   .walker svg, .walker__limb, .ship__flame, .ship__flame2 { animation: none !important; }
   .reveal { opacity: 1 !important; transform: none !important; }
   .hero__connect-beam i, .hero__connect-chevron { animation: none; }
-  .featured.is-lit .spotlight, .featured.is-lit .section-head, .featured.is-lit .spotlight__cone, .featured.is-lit .spotlight__shine, .featured.is-lit .section-head .dot { animation: none; }
+  .featured.is-lit .spotlight, .featured.is-lit .section-head, .featured.is-lit .spotlight__cone, .featured.is-lit .spotlight__shine, .featured.is-lit .section-head .dot, .featured.is-lit .spotlight__motes, .spotlight__motes i { animation: none; }
   html { scroll-behavior: auto; }
 }
 

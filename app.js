@@ -95,7 +95,7 @@ function seedData() {
 }
 
 /* 精选真实案例（来自 AtomGit，固定 id + 真实项目截图） */
-const CURATED_KEY = 'atomcode_curated_v5';
+const CURATED_KEY = 'atomcode_curated_v6';
 function curatedData() {
   const now = Date.now();
   return [
@@ -123,6 +123,12 @@ function curatedData() {
       description: '一个纯原生 HTML/CSS/JS 实现的单人对三 AI 掼蛋（关牌）游戏，单文件全内联、无框架无构建无后端，双击即玩。你坐南，队友坐北，左右为对手，两队从打 2 一路升到打 A。\n\n🎴 完整竞技规则\n· 升级赛制：两队各自级别 2→A，坐庄方级牌为本局级牌；打 A 一局拿头游即赢整场\n· 打 A 保护、名次升级（双下 +3 / 1&3 名 +2 / 1&4 名 +1）\n· 进贡 / 还贡 / 抗贡；首局摸牌定先手\n· 红桃级牌 = 癞子（百搭）可拼任意牌型；接风\n\n🃏 牌型：单张 / 对子 / 三张 / 三带二 / 顺子 / 三连对 / 钢板，以及炸弹类（普通炸 / 同花顺 / 天王炸），非炸不能压炸；另有带拖特色玩法。\n\n🎮 操作：出牌 / 过 / 提示 / 新整场，点击手牌选中上浮。\n\n仓库：https://gitcode.com/Midora/guandan',
       author: 'Midora', link: 'https://gitcode.com/Midora/guandan', demo: 'https://raw.gitcode.work/Midora/guandan/raw/main/index.html', tags: ['游戏', '纸牌', '掼蛋', '单机'],
       cover: 'assets/covers/guandan-2.png', gallery: ['assets/covers/guandan-2.png', 'assets/covers/guandan-1.png'], parentId: null, likes: 96, views: 720, comments: [{ id: uid(), author: '牌搭子', text: '规则做得很全，AI 还会进贡抗贡，服气', at: now - 2 * 3600000 }], createdAt: now - 3 * 3600000,
+    },
+    {
+      id: 'c_goornot', title: '谁去呀 · 活动小程序', tagline: '用 AtomCode 从 0 到 1 开发并上线的微信小程序',
+      description: '《谁去呀》是用 AtomCode 从零对话式开发、并完整走通「创建 → 开发 → 发布」全流程上线的微信小程序——一个帮朋友 / 同事发起活动、报名、看「谁去呀」的轻社交工具。\n\n📱 产品\n· 发起活动 / 活动详情 / 报名参与 / 参与人一览\n· 首页活动流、我参与的活动、个人中心\n· 微信小程序前端 + Node.js 后端\n\n🛠 亮点：整个项目（小程序前端 + 后端）由 AtomCode 用自然语言对话式开发，仓库还附带了「用 AtomCode 开发并发布微信小程序」的完整全流程教程。\n\n仓库：https://gitcode.com/uksri/goOrNot',
+      author: 'uksri', link: 'https://gitcode.com/uksri/goOrNot', tags: ['小程序', '社交', '活动', '工具'],
+      cover: 'assets/covers/goornot-1.png', gallery: ['assets/covers/goornot-1.png', 'assets/covers/goornot-2.png'], parentId: null, likes: 68, views: 510, comments: [], createdAt: now - 1 * 3600000,
     },
   ];
 }
@@ -315,6 +321,7 @@ function renderFeatured() {
       </div>
     </div>
     <div class="spotlight__cone" aria-hidden="true"></div>
+    <div class="spotlight__motes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="spotlight__shine" aria-hidden="true"></div>`;
   attachHoverPreviews(spot);
 }
